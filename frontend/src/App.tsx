@@ -23,20 +23,6 @@ const Card = ({ name, description, head, members, createdAt }: { name: string, d
   );
 }
 
-const Header = () => {
-  return (
-    <header className="navbar">
-      <div className="container">
-        <a href="/"><h1 className="logo">동아리 TF 관리 시스템</h1></a>
-        <nav className="nav-links">
-          <a href="#">마이페이지</a>
-          <a href="/login">로그인</a>
-        </nav>
-      </div>
-    </header>
-  );
-}
-
 const Home = () => {
   const tfList = [
     {
@@ -75,8 +61,15 @@ const Home = () => {
 
   return (
     <div className="page-wrapper">
-      <Header />
-
+      <header className="navbar">
+        <div className="container">
+          <a href="/"><h1 className="logo">동아리 TF 관리 시스템</h1></a>
+          <nav className="nav-links">
+            <a href="/login">마이페이지</a>
+            <a href="/login">로그인</a>
+          </nav>
+        </div>
+      </header>
       <main className="main container">
         <h2 className="section-title">전체 TF</h2>
         <div className="card-grid">
@@ -111,4 +104,4 @@ const App = () => {
   );
 }
 
-export default App
+export default App;
