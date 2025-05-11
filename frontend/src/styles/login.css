@@ -6,9 +6,9 @@
 
 .login-container {
     margin: 15vh auto;
-    padding: 2rem;
-    min-width: 40vw;
-    min-height: 40vh;
+    padding: 1.5rem 2rem 4rem;
+    min-width: 30vw;
+    min-height: 50vh;
     border-radius: 10px;
     border: 1px solid #ddd;
     background-color: white;
@@ -16,7 +16,7 @@
 
 .login-container h1 {
     font-size: 24px;
-    margin-bottom: 1.5rem;
+    margin: 1rem 0.5rem 2.5rem;
 }
 
 .login-container form {
@@ -33,6 +33,7 @@
     border-radius: 5px;
     border: 1px solid #ddd;
     background-color: white;
+    color: #333;
 }
 
 .login-container form button {

@@ -6,7 +6,8 @@ import {
   Navigate,
 } from "react-router-dom";
 import Login from "./pages/login";
-import './App.css'
+import './styles/App.css'
+import SignUp from "./pages/signup";
 
 const Card = ({ name, description, head, members, createdAt }: { name: string, description: string, head: string, members: number, createdAt: string }) => {
   return (
@@ -66,6 +67,7 @@ const Home = () => {
           <a href="/"><h1 className="logo">동아리 TF 관리 시스템</h1></a>
           <nav className="nav-links">
             <a href="/login">마이페이지</a>
+            <a href='/signup'>회원가입</a>
             <a href="/login">로그인</a>
           </nav>
         </div>
@@ -98,6 +100,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

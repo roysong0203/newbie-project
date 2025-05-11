@@ -1,5 +1,5 @@
-import '../App.css';
-import './login.css';
+import '../styles/App.css';
+import '../styles/login.css';
 
 const Login = () => {
     return (
@@ -8,7 +8,8 @@ const Login = () => {
                 <div className="container">
                     <a href="/"><h1 className="logo">동아리 TF 관리 시스템</h1></a>
                     <nav className="nav-links">
-                    <a href="/login">마이페이지</a>
+                    <a href="/">홈으로</a>
+                    <a href='/signup'>회원가입</a>
                     <a href="/login">로그인</a>
                     </nav>
                 </div>
