@@ -1,0 +1,39 @@
+.navbar {
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.container {
+  width: 100vw;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  color: #333;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.navbar button {
+  background: none;
+  border: none;
+  color: blue;
+  cursor: pointer;
+  font: inherit;
+}

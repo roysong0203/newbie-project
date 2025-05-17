@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import '../styles/App.css';
 import '../styles/login.css';
+import Header from './header';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
+  const navigate = useNavigate();
+  const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -24,12 +28,15 @@ const SignUp = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, username, password }),
+        body: JSON.stringify({ name, id, username, password }),
       });
 
       if (res.ok) {
         setSuccess('회원가입이 완료되었습니다.');
         setError('');
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
       } else {
         const data = await res.json();
         setError(data.message || '회원가입 실패');
@@ -43,21 +50,13 @@ const SignUp = () => {
 
   return (
     <div className='page-wrapper'>
-      <header className="navbar">
-        <div className="container">
-          <a href="/"><h1 className="logo">동아리 TF 관리 시스템</h1></a>
-          <nav className="nav-links">
-            <a href="/">홈으로</a>
-            <a href='/signup'>회원가입</a>
-            <a href="/login">로그인</a>
-          </nav>
-        </div>
-      </header>
+      <Header />
       <div className='login-container'>
         <h1>회원가입</h1>
         <form onSubmit={handleSubmit}>
           <input type="text" placeholder="이름" value={name} onChange={e => setName(e.target.value)} required />
-          <input type="text" placeholder="아이디" value={username} onChange={e => setUsername(e.target.value)} required />
+          <input type="text" placeholder="아이디" value={id} onChange={e => setId(e.target.value)} required />
+          <input type="text" placeholder="닉네임" value={username} onChange={e => setUsername(e.target.value)} required />
           <input type="password" placeholder="비밀번호" value={password} onChange={e => setPassword(e.target.value)} required />
           <input type="password" placeholder="비밀번호 재확인" value={passwordCheck} onChange={e => setPasswordCheck(e.target.value)} required />
           <button type="submit">회원가입</button>

@@ -8,8 +8,8 @@ datasource db {
 }
 
 model user {
-  id       Int    @id @default(autoincrement())
-  name     String @db.VarChar(50)
-  username String @db.VarChar(50)
+  id       String @id @db.VarChar(10)
+  name     String @db.VarChar(10)
+  username String @db.VarChar(10)
   password String @db.VarChar(255)
 }

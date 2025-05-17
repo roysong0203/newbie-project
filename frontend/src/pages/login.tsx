@@ -1,26 +1,56 @@
 import '../styles/App.css';
 import '../styles/login.css';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Header from './header';
 
 const Login = () => {
+    const navigate = useNavigate();
+    const [id, setId] = useState('');
+    const [password, setPassword] = useState('');
+    const [success, setSuccess] = useState('');
+    const [error, setError] = useState('');
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const res = await fetch('http://localhost:4000/api/login', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            setError('');
+            setSuccess(`환영합니다, ${data.user.username}님!`);
+            setTimeout(() => {
+                navigate('/');
+                window.location.reload();
+            }, 100);
+        } else {
+            setError(data.message);
+            setSuccess('');
+            navigate('/login');
+        }
+    };
+
     return (
         <div className='page-wrapper'>
-            <header className="navbar">
-                <div className="container">
-                    <a href="/"><h1 className="logo">동아리 TF 관리 시스템</h1></a>
-                    <nav className="nav-links">
-                    <a href="/">홈으로</a>
-                    <a href='/signup'>회원가입</a>
-                    <a href="/login">로그인</a>
-                    </nav>
-                </div>
-            </header>
+            <Header />
             <div className='login-container'>
                 <h1>로그인</h1>
-                <form>
-                    <input type="text" id="username" placeholder="아이디를 입력해주세요" />
-                    <input type="password" id="password" placeholder="비밀번호를 입력해주세요" />
+                <form onSubmit={handleLogin}>
+                    <input type="text" id="username" value={id} onChange={e => setId(e.target.value)} placeholder="아이디를 입력해주세요" />
+                    <input type="password" id="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="비밀번호를 입력해주세요" />
                     <button type="submit">로그인</button>
                 </form>
+                <p style={{color: "green"}}> {success} </p>
+                <p style={{color: "red"}}> {error} </p>
                 <p>아직 계정이 없으신가요? <a href="/signup">회원가입</a></p>
             </div>
         </div>
