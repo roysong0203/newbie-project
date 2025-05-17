@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/App.css';
 import '../styles/home.css';
 import Header from './header';
@@ -19,6 +20,7 @@ const Card = ({ name, description, head, members, createdAt }: { name: string, d
 }
 
 const Home = () => {
+  const navigate = useNavigate();
   const tfList = [
     {
       id: 1,
@@ -73,7 +75,7 @@ const Home = () => {
             />
           ))}
           <div className="card create">
-            <button className="create-btn">+ 새로운 TF 만들기</button>
+            <button className="create-btn" onClick={(e) => {navigate('/createTF')}}>+ 새로운 TF 만들기</button>
           </div>
         </div>
       </main>

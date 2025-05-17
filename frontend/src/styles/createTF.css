@@ -1,0 +1,124 @@
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.tf-create-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding: 40px 20px;
+}
+
+.tf-form {
+  background-color: white;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tf-form h1 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.tf-form input[type="text"],
+.tf-form textarea {
+  padding: 12px;
+  margin-top: 0.5rem;
+  border: 1px solid #d1d5db;
+  background-color: #fff;
+  color: #000;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+  resize: none;
+}
+
+.tf-form input[readonly] {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.tf-form textarea {
+  min-height: 100px;
+}
+
+.member-section {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.member-section input {
+  margin-bottom: 4px;
+}
+
+.member-section button {
+  align-self: center;
+  padding: 8px 16px;
+  background-color: #e5e7eb;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.member-section button:hover {
+  background-color: #d1d5db;
+}
+
+.tf-form button[type="submit"] {
+  padding: 12px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.tf-form button[type="submit"]:hover {
+  background-color: #2563eb;
+}
+
+.member-item {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.member-item input {
+  flex: 1;
+}
+
+.member-item button {
+  padding: 8px 12px;
+  background-color: #f87171;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.member-item button:hover {
+  background-color: #ef4444;
+}

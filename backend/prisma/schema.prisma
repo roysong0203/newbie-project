@@ -7,9 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  id       String @id @db.VarChar(10)
-  name     String @db.VarChar(10)
-  username String @db.VarChar(10)
-  password String @db.VarChar(255)
+model TF {
+  id          Int        @id @default(autoincrement())
+  name        String     @db.VarChar(100)
+  description String?    @db.Text
+  createdAt   DateTime?  @default(now()) @db.DateTime(0)
+  TFMember    TFMember[]
+}
+
+model TFMember {
+  id     Int     @id @default(autoincrement())
+  userId String  @db.VarChar(100)
+  tfId   Int
+  role   String? @default("member") @db.VarChar(50)
+  User   User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "TFMember_ibfk_1")
+  TF     TF      @relation(fields: [tfId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "TFMember_ibfk_2")
+
+  @@index([tfId], map: "tfId")
+  @@index([userId], map: "userId")
+}
+
+model User {
+  id       String     @id @db.VarChar(100)
+  name     String     @db.VarChar(100)
+  username String     @unique(map: "username") @db.VarChar(100)
+  password String     @db.VarChar(255)
+  TFMember TFMember[]
 }

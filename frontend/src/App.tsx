@@ -9,10 +9,9 @@ import Login from "./pages/login";
 import SignUp from "./pages/signup";
 import Home from "./pages/home";
 import { UserProvider } from "./context/userContext";
+import CreateTF from "./pages/createTF";
 
 const App = () => {
-  console.log("App component rendered");
-
   return (
     <UserProvider>
       <Router>
@@ -20,6 +19,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/createTF" element={<CreateTF />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
