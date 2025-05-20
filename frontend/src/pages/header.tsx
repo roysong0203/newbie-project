@@ -24,6 +24,7 @@ const Header = () => {
                 <a href="/"><h1 className="logo">동아리 TF 관리 시스템</h1></a>
                 <nav className="nav-links">
                     <a href="/">홈으로</a>
+                    { isLoggedIn && <a href="/mypage">마이페이지</a> }
                     { !isLoggedIn && <a href='/signup'>회원가입</a>}
                     { !isLoggedIn && <a href="/login">로그인</a> }
                     { isLoggedIn && <a href="/" onClick={handleLogout}>로그아웃</a> }

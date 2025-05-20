@@ -9,7 +9,7 @@ const CreateTF = () => {
     const [description, setDescription] = useState('');
     const [members, setMembers] = useState<string[]>(['']);
     const [createdAt, setCreatedAt] = useState('');
-    const [leaderUsername, setLeaderUsername] = useState('');
+    const [leader, setLeader] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,14 +19,16 @@ const CreateTF = () => {
 
         // 로그인한 사용자 정보 가져오기 (예: 세션 또는 API로부터)
         fetch('http://localhost:4000/api/me', {
-        credentials: 'include',
+            credentials: 'include',
         })
-        .then((res) => res.json())
-        .then((data) => {
-            if (data.user.username) setLeaderUsername(data.user.username);
-            else {
+        .then((res) => {
+            if (!res.ok) {
                 navigate('/login');
             }
+            return res.json();
+        })
+        .then((data) => {
+            if (data.user.username) setLeader(data.user.username);
         });
     }, []);
 
@@ -46,11 +48,11 @@ const CreateTF = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const res = await fetch('http://localhost:4000/api/tf', {
+        const res = await fetch('http://localhost:4000/api/create', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
-            body: JSON.stringify({ name, description, members }),
+            body: JSON.stringify({ name: teamName, description, leader, members }),
         });
 
         const data = await res.json();
@@ -65,7 +67,6 @@ const CreateTF = () => {
     return (
         <div className='page-wrapper'>
             <Header />
-            {/* <h1 style={{textAlign: "center", marginTop: "3vh"}}>TF 생성하기</h1> */}
             <div className="tf-create-wrapper">
                 <form onSubmit={handleSubmit} className="tf-form">
                     <div>
@@ -97,7 +98,7 @@ const CreateTF = () => {
 
                     <div>
                         <label>팀장</label>
-                        <input type="text" value={leaderUsername} readOnly />
+                        <input type="text" value={leader} readOnly />
                     </div>
 
                     <div className="member-section">

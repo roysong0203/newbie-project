@@ -9,22 +9,25 @@ datasource db {
 
 model TF {
   id          Int        @id @default(autoincrement())
-  name        String     @db.VarChar(100)
+  name        String     @db.VarChar(255)
   description String?    @db.Text
   createdAt   DateTime?  @default(now()) @db.DateTime(0)
+  leaderId    String     @db.VarChar(64)
+  User        User       @relation(fields: [leaderId], references: [id], onDelete: Cascade, map: "TF_ibfk_1")
   TFMember    TFMember[]
+
+  @@index([leaderId], map: "leaderId")
 }
 
 model TFMember {
-  id     Int     @id @default(autoincrement())
-  userId String  @db.VarChar(100)
+  id     Int    @id @default(autoincrement())
+  userId String @db.VarChar(64)
   tfId   Int
-  role   String? @default("member") @db.VarChar(50)
-  User   User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "TFMember_ibfk_1")
-  TF     TF      @relation(fields: [tfId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "TFMember_ibfk_2")
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade, map: "TFMember_ibfk_1")
+  TF     TF     @relation(fields: [tfId], references: [id], onDelete: Cascade, map: "TFMember_ibfk_2")
 
+  @@unique([userId, tfId], map: "unique_user_tf")
   @@index([tfId], map: "tfId")
-  @@index([userId], map: "userId")
 }
 
 model User {
@@ -32,5 +35,6 @@ model User {
   name     String     @db.VarChar(100)
   username String     @unique(map: "username") @db.VarChar(100)
   password String     @db.VarChar(255)
+  TF       TF[]
   TFMember TFMember[]
 }

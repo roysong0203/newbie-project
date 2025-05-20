@@ -8,8 +8,10 @@ import './styles/App.css'
 import Login from "./pages/login";
 import SignUp from "./pages/signup";
 import Home from "./pages/home";
-import { UserProvider } from "./context/userContext";
 import CreateTF from "./pages/createTF";
+import TFInfo from "./pages/tfInfo";
+import MyPage from "./pages/mypage";
+import { UserProvider } from "./context/userContext";
 
 const App = () => {
   return (
@@ -20,6 +22,8 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/createTF" element={<CreateTF />} />
+          <Route path="/tf" element={<TFInfo />} />
+          <Route path="/mypage" element={<MyPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
