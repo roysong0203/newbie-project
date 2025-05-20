@@ -37,7 +37,7 @@ const Home = () => {
   return (
     <div className="page-wrapper">
       <Header />
-      <main className="main container">
+      <main className="main container" style={{ width: '87.5%' }}>
         <h2 className="section-title">전체 TF</h2>
         <div className="card-grid">
           {tfList.map((tf) => (

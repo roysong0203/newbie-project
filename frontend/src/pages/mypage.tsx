@@ -49,7 +49,7 @@ const MyPage = () => {
   return (
     <div className="page-wrapper">
       <Header />
-      <main className="main container">
+      <div className="main container" style={{ width: '87.5%' }}>
         <h2 className="section-title">내가 만든 TF</h2>
         <div className="card-grid">
           {leaderTfList.map((tf) => (
@@ -67,8 +67,8 @@ const MyPage = () => {
             <button className="create-btn" onClick={() => navigate('/createTF')}>+ 새로운 TF 만들기</button>
           </div>
         </div>
-      </main>
-      <main className="main container">
+      </div>
+      <div className="main container" style={{ width: '87.5%' }}>
         <h2 className="section-title">내가 속한 TF</h2>
         <div className="card-grid">
           {followerTfList.map((tf) => (
@@ -86,7 +86,7 @@ const MyPage = () => {
             <button className="create-btn" onClick={() => navigate('/createTF')}>+ 새로운 TF 만들기</button>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

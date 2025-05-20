@@ -17,11 +17,11 @@
 
 .section-title {
   font-size: 20px;
-  margin: 1rem 0.5rem;
+  margin: 2rem 0.5rem 1rem;
 }
 
 .card-grid {
-  width: 85%;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
   gap: 1rem;
