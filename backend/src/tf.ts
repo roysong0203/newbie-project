@@ -70,6 +70,75 @@ router.post('/create', async (req: Request, res: Response):Promise<any> => {
   }
 });
 
+// TF 수정 API
+router.put('/edit', async (req: Request, res: Response):Promise<any> => {
+  // console.log('req.body', req.body);
+
+  const { id, name, description, leader, members } = req.body;
+
+  if (!name || !leader) {
+    return res.status(400).json({ message: '이름과 팀장 닉네임은 필수입니다.' });
+  }
+
+  try {
+    // 팀장 정보 가져오기
+    const leaderUser = await prisma.user.findUnique({
+      where: { username: leader },
+    });
+
+    // console.log('leaderUser', leaderUser);
+
+    if (!leaderUser) {
+      return res.status(404).json({ message: '팀장 정보를 찾을 수 없습니다.' });
+    }
+
+    // 팀원 정보 가져오기
+    const memberUsers = await prisma.user.findMany({
+      where: {
+        username: {
+          in: members,
+        },
+      },
+    });
+
+    // 팀원 정보가 불일치할 경우 에러 처리
+    const memberUsernames = memberUsers.map((user) => user.username);
+    const invalidMembers = members.filter((member: string) => !memberUsernames.includes(member));
+    if (members > 0 && invalidMembers.length > 0) {
+      console.log('memberUsernames', memberUsernames);
+      console.log('invalidMembers', invalidMembers);
+      return res.status(400).json({ message: `다음 팀원은 존재하지 않습니다: ${invalidMembers.join(', ')}` });
+    }
+
+    // 팀원 중 팀장 포함 여부 확인
+    if (members.includes(leader)) {
+      console.log('팀원 목록에 팀장이 포함되어 있습니다.');
+      return res.status(400).json({ message: '팀원 목록에 팀장이 포함되어 있습니다.' });
+    }
+
+    // console.log('memberUsers', memberUsers);
+
+    // TF 수정
+    const newTF = await prisma.tF.update({
+      where: { id: Number(req.body.id) },
+      data: {
+        name,
+        description,
+        leaderId: leaderUser?.id,
+        TFMember: {
+          deleteMany: {},
+          create: memberUsers?.map((user) => ({ userId: user.id })) || [],
+        },
+      },
+    });
+
+    res.status(201).json({ message: 'TF 수정 완료', tf: newTF });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: '서버 오류 발생' });
+  }
+});
+
 // TF 전체 조회 API
 router.get('/tfs', async (_req: Request, res: Response) => {
   // console.log('TF 전체 조회 API 호출');

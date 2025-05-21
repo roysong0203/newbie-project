@@ -1,6 +1,6 @@
 // TF의 정보를 보여주는 페이지입니다.
 import React, { useState, useEffect, use } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import '../styles/tfInfo.css';
 import '../styles/App.css';
 import Header from './header';
@@ -11,6 +11,7 @@ const TFInfo = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState<any>(null);
     const [isLeader, setIsLeader] = useState(false);
+    const navigate = useNavigate();
 
     // console.log('TFInfo id:', id);
 
@@ -70,6 +71,14 @@ const TFInfo = () => {
         }
     }
 
+    const handleEdit = () => {
+        navigate('/editTF', {
+            state: {
+                id: id
+            }
+        });
+    }
+
     const handleJoin = async () => {
         const res = await fetch(`http://localhost:4000/api/tf/${id}/join`, {
             method: 'POST',
@@ -100,7 +109,7 @@ const TFInfo = () => {
                 </div>
                 <div style={{margin: "1.5rem 0.5rem 1.5rem", display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '0.5rem'}}>
                     {isLoggedIn && !isLeader && <button className="btn" onClick={() => handleJoin()} style={{width: '75%'}}>TF 참여 요청</button>}
-                    {isLeader && <button className="btn" style={{width: '75%'}}>수정</button>}
+                    {isLeader && <button className="btn" onClick={() => { handleEdit() }} style={{width: '75%'}}>수정</button>}
                     {isLeader && <button className="btn" onClick={() => { handleDelete() }} style={{width: '75%', background: 'red'}}>삭제</button>}
                 </div>
             </main>
