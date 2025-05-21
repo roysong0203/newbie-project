@@ -35,6 +35,21 @@ router.post('/create', async (req: Request, res: Response):Promise<any> => {
       },
     });
 
+    // 팀원 정보가 불일치할 경우 에러 처리
+    const memberUsernames = memberUsers.map((user) => user.username);
+    const invalidMembers = members.filter((member: string) => !memberUsernames.includes(member));
+    if (members > 0 && invalidMembers.length > 0) {
+      console.log('memberUsernames', memberUsernames);
+      console.log('invalidMembers', invalidMembers);
+      return res.status(400).json({ message: `다음 팀원은 존재하지 않습니다: ${invalidMembers.join(', ')}` });
+    }
+
+    // 팀원 중 팀장 포함 여부 확인
+    if (members.includes(leader)) {
+      console.log('팀원 목록에 팀장이 포함되어 있습니다.');
+      return res.status(400).json({ message: '팀원 목록에 팀장이 포함되어 있습니다.' });
+    }
+
     // console.log('memberUsers', memberUsers);
 
     const newTF = await prisma.tF.create({
@@ -55,7 +70,7 @@ router.post('/create', async (req: Request, res: Response):Promise<any> => {
   }
 });
 
-// TF 전체 조회 API (옵션)
+// TF 전체 조회 API
 router.get('/tfs', async (_req: Request, res: Response) => {
   // console.log('TF 전체 조회 API 호출');
 
@@ -75,7 +90,7 @@ router.get('/tfs', async (_req: Request, res: Response) => {
   }
 });
 
-// TF 상세 조회 API (옵션)
+// TF 상세 조회 API
 router.get('/tf/:id', async (req: Request, res: Response):Promise<any> => {
   const { id } = req.params;
 
@@ -88,6 +103,7 @@ router.get('/tf/:id', async (req: Request, res: Response):Promise<any> => {
         name: true,
         description: true,
         createdAt: true,
+        leaderId: true,
         User: {
           select: {
             username: true,
@@ -106,6 +122,8 @@ router.get('/tf/:id', async (req: Request, res: Response):Promise<any> => {
         },
       },
     });
+
+    // console.log('tfWithDetails', tfWithDetails);
 
     if (!tfWithDetails) {
       return res.status(404).json({ message: 'TF를 찾을 수 없습니다.' });
@@ -162,6 +180,70 @@ router.get('/mytfs', async (req: Request, res: Response):Promise<any> => {
       leaderTFs,
       followerTFs,
     });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: '서버 오류' });
+  }
+});
+
+// TF 삭제 API
+router.delete('/tf/:id', async (req: Request, res: Response):Promise<any> => {
+  const { id } = req.params;
+
+  try {
+    const deletedTF = await prisma.tF.delete({
+      where: { id: Number(id) },
+    });
+
+    res.json({ message: 'TF 삭제 완료', tf: deletedTF });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: '서버 오류' });
+  }
+});
+
+// TF 가입 API
+router.post('/tf/:id/join', async (req: Request, res: Response):Promise<any> => {
+  const { id } = req.params;
+  const user = req.session.user;
+
+  if (!user) {
+    console.log('로그인 필요');
+    return res.status(401).json({ message: '로그인 필요' });
+  }
+
+  try {
+    const tf = await prisma.tF.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!tf) {
+      console.log('TF를 찾을 수 없습니다.');
+      return res.status(404).json({ message: 'TF를 찾을 수 없습니다.' });
+    }
+
+    // console.log('tf', tf);
+
+    // TF에 이미 가입되어 있는지 확인
+    const existingMember = await prisma.tFMember.findFirst({
+      where: {
+        tfId: tf.id,
+        userId: user.id,
+      },
+    });
+    if (existingMember || tf.leaderId === user.id) {
+      console.log('이미 가입된 TF입니다.');
+      return res.status(400).json({ message: '이미 가입된 TF입니다.' });
+    }
+
+    await prisma.tFMember.create({
+      data: {
+        tfId: tf.id,
+        userId: user.id,
+      },
+    });
+
+    res.json({ message: 'TF 가입 완료' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: '서버 오류' });

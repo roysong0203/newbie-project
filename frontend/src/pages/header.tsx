@@ -13,6 +13,7 @@ const Header = () => {
 
         if (res.ok) {
             setUser(null); // context 상태 초기화
+            alert('로그아웃 되었습니다.');
         } else {
             alert('로그아웃에 실패했습니다.');
         }
@@ -23,6 +24,7 @@ const Header = () => {
             <div className="container">
                 <a href="/"><h1 className="logo">동아리 TF 관리 시스템</h1></a>
                 <nav className="nav-links">
+                    { isLoggedIn && <div><strong>{user.username}</strong> 님, 반갑습니다!</div>}
                     <a href="/">홈으로</a>
                     { isLoggedIn && <a href="/mypage">마이페이지</a> }
                     { !isLoggedIn && <a href='/signup'>회원가입</a>}
