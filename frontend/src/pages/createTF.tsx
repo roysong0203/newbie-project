@@ -57,10 +57,10 @@ const CreateTF = () => {
 
         const data = await res.json();
         if (res.ok) {
-            alert('TF 생성 완료');
+            alert('TF가 생성되었습니다.');
             window.location.href = '/';
         } else {
-            alert(data.message || '생성 실패');
+            alert(data.message || 'TF 생성에 실패했습니다.');
         }
     };
 

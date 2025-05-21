@@ -71,10 +71,10 @@ const EditTF = () => {
 
         const data = await res.json();
         if (res.ok) {
-            alert('TF 수정 완료');
+            alert('TF 정보가 수정되었습니다.');
             window.location.href = '/';
         } else {
-            alert(data.message || '생성 실패');
+            alert(data.message || 'TF 정보 수정에 실패했습니다.');
         }
     };
 

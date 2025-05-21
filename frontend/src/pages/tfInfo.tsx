@@ -58,6 +58,8 @@ const TFInfo = () => {
     // console.log(tf)
 
     const handleDelete = async () => {
+        if(confirm('정말 삭제하시겠습니까?') === false) return;
+
         const res = await fetch(`http://localhost:4000/api/tf/${id}`, {
             method: 'DELETE',
             credentials: 'include',
@@ -108,7 +110,7 @@ const TFInfo = () => {
                     <span>📅 생성 날짜: {new Date(tf.createdAt).toISOString().split('T')[0]}</span>
                 </div>
                 <div style={{margin: "1.5rem 0.5rem 1.5rem", display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '0.5rem'}}>
-                    {isLoggedIn && !isLeader && <button className="btn" onClick={() => handleJoin()} style={{width: '75%'}}>TF 참여 요청</button>}
+                    {isLoggedIn && !isLeader && <button className="btn" onClick={() => handleJoin()} style={{width: '75%'}}>TF 참여</button>}
                     {isLeader && <button className="btn" onClick={() => { handleEdit() }} style={{width: '75%'}}>수정</button>}
                     {isLeader && <button className="btn" onClick={() => { handleDelete() }} style={{width: '75%', background: 'red'}}>삭제</button>}
                 </div>
