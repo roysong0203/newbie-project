@@ -88,9 +88,9 @@ const TFInfo = () => {
         });
 
         if (res.ok) {
-            alert('TF에 참여 요청을 보냈습니다.');
+            alert('TF에 참여했습니다.');
         } else {
-            res.json().then(data => alert(data.message || 'TF 참여 요청에 실패했습니다.'));
+            res.json().then(data => alert(data.message || 'TF 참여에 실패했습니다.'));
         }
     }
 
