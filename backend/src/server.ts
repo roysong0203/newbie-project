@@ -6,10 +6,21 @@ import loginRouter from './login';
 import logoutRouter from './logout';
 import tfRouter from './tf';
 
+declare module 'express-session' {
+  interface SessionData {
+    cookie: Cookie; 
+    user?: {
+      id: string;
+      username: string;
+    } | undefined;
+  }
+}
+
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173', // 프론트엔드 주소
+  origin: 'https://dori.newbie.sparcs.me', // 프론트엔드 주소
+
   credentials: true, // 쿠키를 주고받기 위해 필수
 }));
 
@@ -31,6 +42,6 @@ app.use('/api', loginRouter);
 app.use('/api', logoutRouter);
 app.use('/api', tfRouter);
 
-app.listen(4000, () => {
-  console.log('Server running at http://localhost:4000');
+app.listen(8000, () => {
+  console.log('Server running at https://dori.api.newbie.sparcs.me');
 });

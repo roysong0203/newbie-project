@@ -27,7 +27,7 @@ const MyPage = () => {
   const [followerTfList, setFollowerTfList] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/mytfs', {
+    fetch('https://dori.api.newbie.sparcs.me/api/mytfs', {
       credentials: 'include',
     })
     .then(res => {

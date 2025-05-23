@@ -16,7 +16,7 @@ const TFInfo = () => {
     // console.log('TFInfo id:', id);
 
     useEffect(() => {
-        fetch('http://localhost:4000/api/me', {
+        fetch('https://dori.api.newbie.sparcs.me/api/me', {
             credentials: 'include',
         })
         .then(res => {
@@ -35,7 +35,7 @@ const TFInfo = () => {
     }, []);
 
     useEffect(() => {
-        fetch(`http://localhost:4000/api/tf/${id}`, {
+        fetch(`https://dori.api.newbie.sparcs.me/api/tf/${id}`, {
             credentials: 'include',
         })
         .then(res => res.json())
@@ -60,7 +60,7 @@ const TFInfo = () => {
     const handleDelete = async () => {
         if(confirm('정말 삭제하시겠습니까?') === false) return;
 
-        const res = await fetch(`http://localhost:4000/api/tf/${id}`, {
+        const res = await fetch(`https://dori.api.newbie.sparcs.me/api/tf/${id}`, {
             method: 'DELETE',
             credentials: 'include',
         });
@@ -82,7 +82,7 @@ const TFInfo = () => {
     }
 
     const handleJoin = async () => {
-        const res = await fetch(`http://localhost:4000/api/tf/${id}/join`, {
+        const res = await fetch(`https://dori.api.newbie.sparcs.me/api/tf/${id}/join`, {
             method: 'POST',
             credentials: 'include',
         });

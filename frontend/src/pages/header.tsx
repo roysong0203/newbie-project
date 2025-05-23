@@ -6,7 +6,7 @@ const Header = () => {
     const isLoggedIn = user !== null;
 
     const handleLogout = async () => {
-        const res = await fetch('http://localhost:4000/api/logout', {
+        const res = await fetch('https://dori.api.newbie.sparcs.me/api/logout', {
         method: 'POST',
         credentials: 'include',
         });

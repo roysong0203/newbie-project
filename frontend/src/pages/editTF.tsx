@@ -15,7 +15,7 @@ const EditTF = () => {
 
     useEffect(() => {
         // 로그인한 사용자 정보 가져오기 (예: 세션 또는 API로부터)
-        fetch('http://localhost:4000/api/me', {
+        fetch('https://dori.api.newbie.sparcs.me/api/me', {
             credentials: 'include',
         })
         .then((res) => {
@@ -27,7 +27,7 @@ const EditTF = () => {
     }, []);
 
     useEffect(() => {
-        fetch(`http://localhost:4000/api/tf/${id}`, {
+        fetch(`https://dori.api.newbie.sparcs.me/api/tf/${id}`, {
             credentials: 'include',
         })
         .then(res => res.json())
@@ -62,7 +62,7 @@ const EditTF = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const res = await fetch('http://localhost:4000/api/edit', {
+        const res = await fetch('https://dori.api.newbie.sparcs.me/api/edit', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',

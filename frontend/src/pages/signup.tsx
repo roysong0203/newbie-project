@@ -23,7 +23,7 @@ const SignUp = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:4000/api/signup', {
+      const res = await fetch('https://dori.api.newbie.sparcs.me/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

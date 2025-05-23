@@ -14,7 +14,7 @@ const Login = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const res = await fetch('http://localhost:4000/api/login', {
+        const res = await fetch('https://dori.api.newbie.sparcs.me/api/login', {
             method: 'POST',
             credentials: 'include',
             headers: {

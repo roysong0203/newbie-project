@@ -26,7 +26,7 @@ const Home = () => {
   const [tfList, setTfList] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/tfs', {
+    fetch('https://dori.api.newbie.sparcs.me/api/tfs', {
       credentials: 'include',
     })
       .then(res => res.json())
