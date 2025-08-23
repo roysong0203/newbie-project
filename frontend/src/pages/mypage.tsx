@@ -1,32 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { useUser } from '../context/userContext';
 import { useNavigate } from 'react-router-dom';
 import '../styles/App.css';
 import '../styles/home.css';
 import Header from './header';
-
-const Card = ({ id, name, description, head, members, createdAt }: { id: number, name: string, description: string, head: string, members: number, createdAt: string }) => {
-  const navigate = useNavigate();
-
-  return (
-    <div className="card">
-      <h3>{name}</h3>
-      <p>{description}</p>
-      <div className="info">
-        <span>👤 팀장: {head}</span>
-        <span>👥 팀원: {members}명</span>
-        <span>📅 생성 날짜: {createdAt}</span>
-      </div>
-      <button className="btn" onClick={ () => navigate('/tf', { state: { id } }) }>자세히 보기</button>
-    </div>
-  );
-}
+import Card from './tfCard';
 
 const MyPage = () => {
   const navigate = useNavigate();
+  const { user, setUser } = useUser();
   const [leaderTfList, setLeaderTfList] = useState<any[]>([]);
   const [followerTfList, setFollowerTfList] = useState<any[]>([]);
 
   useEffect(() => {
+
     fetch('http://localhost:4000/api/mytfs', {
       credentials: 'include',
     })
@@ -50,7 +37,7 @@ const MyPage = () => {
     <div className="page-wrapper">
       <Header />
       <div className="main container" style={{ width: '87.5%' }}>
-        <h2 className="section-title">내가 만든 TF</h2>
+        <h2 className="section-title">{user?.username} 님이 속한 TF</h2>
         <div className="card-grid">
           {leaderTfList.map((tf) => (
             <Card
@@ -63,14 +50,6 @@ const MyPage = () => {
               createdAt={new Date(tf.createdAt).toISOString().split('T')[0]}
             />
           ))}
-          <div className="card create">
-            <button className="create-btn" onClick={() => navigate('/createTF')}>+ 새로운 TF 만들기</button>
-          </div>
-        </div>
-      </div>
-      <div className="main container" style={{ width: '87.5%' }}>
-        <h2 className="section-title">내가 속한 TF</h2>
-        <div className="card-grid">
           {followerTfList.map((tf) => (
             <Card
               id={tf.id}

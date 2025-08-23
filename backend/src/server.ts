@@ -5,6 +5,7 @@ import signupRouter from './signup';
 import loginRouter from './login';
 import logoutRouter from './logout';
 import tfRouter from './tf';
+import memberRouter from './member';
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use('/api', signupRouter);
 app.use('/api', loginRouter);
 app.use('/api', logoutRouter);
 app.use('/api', tfRouter);
+app.use('/api', memberRouter);
 
 app.listen(4000, () => {
   console.log('Server running at http://localhost:4000');

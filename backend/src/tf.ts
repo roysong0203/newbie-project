@@ -44,10 +44,18 @@ router.post('/create', async (req: Request, res: Response):Promise<any> => {
       return res.status(400).json({ message: `다음 팀원은 존재하지 않습니다: ${invalidMembers.join(', ')}` });
     }
 
-    // 팀원 중 팀장 포함 여부 확인
-    if (members.includes(leader)) {
-      console.log('팀원 목록에 팀장이 포함되어 있습니다.');
-      return res.status(400).json({ message: '팀원 목록에 팀장이 포함되어 있습니다.' });
+    // 중복된 팀원 확인(팀장 포함)
+    const allMembers = [...members, leader];
+    const uniqueMembers = new Set(allMembers);
+    if (uniqueMembers.size !== allMembers.length) {
+      console.log('중복된 팀원이 있습니다.');
+      return res.status(400).json({ message: '중복된 팀원이 있습니다.' });
+    }
+
+    // TF 설명이 200자 초과 시 에러 처리
+    if (description && description.length > 200) {
+      console.log('TF 설명이 200자를 초과합니다.');
+      return res.status(400).json({ message: 'TF 설명은 200자를 초과할 수 없습니다.' });
     }
 
     // console.log('memberUsers', memberUsers);

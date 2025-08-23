@@ -22,38 +22,10 @@
 
 .card-grid {
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-  gap: 1rem;
-}
-
-.card {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.card h3 {
-  margin-bottom: 0.5rem;
-}
-
-.card .info {
-  font-size: 14px;
-  color: #666;
-  margin: 0.5rem 0;
   display: flex;
-  justify-content: space-between;
-}
-
-.btn {
-  background-color: #2563eb;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
 }
 
 .card.create {
@@ -72,4 +44,8 @@
   cursor: pointer;
   width: 100%;
   height: 100%;
+}
+
+.card.create:hover {
+  background-color: #f0f0f0;
 }

@@ -1,7 +1,7 @@
 .tfinfo-container {
     margin: 12.5vh auto;
     padding: 1rem 2rem 1.5rem;
-    min-width: 25vw;
+    width: max(300px, 50vw);
     min-height: 50vh;
     border-radius: 10px;
     border: 1px solid #ddd;
@@ -17,4 +17,36 @@
     justify-content: space-around;
     align-items: start;
     gap: 0.5rem;
+}
+
+.join-btn, .edit-btn, .delete-btn {
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.join-btn {
+    background-color: #2563eb;
+}
+
+.join-btn:hover {
+    background-color: #1e40af;
+}
+
+.edit-btn {
+    background-color: #10b981;
+}
+
+.edit-btn:hover {
+    background-color: #047857;
+}
+
+.delete-btn {
+    background-color: #ef4444;
+}
+
+.delete-btn:hover {
+    background-color: #b91c1c;
 }

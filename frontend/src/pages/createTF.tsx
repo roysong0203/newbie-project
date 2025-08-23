@@ -8,6 +8,7 @@ const CreateTF = () => {
     const [teamName, setTeamName] = useState('');
     const [description, setDescription] = useState('');
     const [members, setMembers] = useState<string[]>(['']);
+    const [userList, setUserList] = useState<string[]>([]);
     const [createdAt, setCreatedAt] = useState('');
     const [leader, setLeader] = useState('');
     const navigate = useNavigate();
@@ -30,6 +31,17 @@ const CreateTF = () => {
         .then((data) => {
             if (data.user.username) setLeader(data.user.username);
         });
+
+        fetch('http://localhost:4000/api/members', {
+            credentials: 'include',
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log('회원 목록:', data);
+            if (Array.isArray(data)) {
+                setUserList(data.map((user: { username: string }) => user.username));
+            }
+        });
     }, []);
 
     const addMember = () => setMembers([...members, '']);
@@ -48,6 +60,7 @@ const CreateTF = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
         const res = await fetch('http://localhost:4000/api/create', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -108,12 +121,15 @@ const CreateTF = () => {
                         </div>
                         {members.map((member, index) => (
                             <div key={index} className="member-item">
-                                <input
-                                    type="text"
-                                    placeholder={`팀원 ${index + 1} 닉네임`}
+                                <select
                                     value={member}
                                     onChange={(e) => handleMemberChange(index, e.target.value)}
-                                />
+                                >
+                                    <option value="">팀원 선택</option>
+                                    {userList.map((username) => (
+                                        <option key={username} value={username}>{username}</option>
+                                    ))}
+                                </select>
                                 <button type="button" onClick={() => removeMember(index)}>삭제</button>
                             </div>
                         ))}

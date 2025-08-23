@@ -33,7 +33,8 @@
 }
 
 .tf-form input[type="text"],
-.tf-form textarea {
+.tf-form textarea,
+.tf-form select {
   padding: 12px;
   margin-top: 0.5rem;
   border: 1px solid #d1d5db;
@@ -64,14 +65,16 @@ label {
   font-weight: 600;
 }
 
-.member-section input {
+.member-section select {
   margin-bottom: 4px;
+  padding: 8px;
 }
 
 .member-section button {
   align-self: center;
   padding: 8px 16px;
-  background-color: #e5e7eb;
+  background-color: #2563eb;
+  color: white;
   border: none;
   border-radius: 6px;
   font-size: 0.9rem;
@@ -80,7 +83,7 @@ label {
 }
 
 .member-section button:hover {
-  background-color: #d1d5db;
+  background-color: #1e40af;
 }
 
 .tf-form button[type="submit"] {
@@ -105,7 +108,7 @@ label {
   margin-bottom: 8px;
 }
 
-.member-item input {
+.member-item select {
   flex: 1;
 }
 
