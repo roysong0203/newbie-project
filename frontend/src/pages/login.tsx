@@ -3,6 +3,7 @@ import '../styles/login.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './header';
+import { API_BASE_URL } from '../config';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Login = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const res = await fetch('http://localhost:4000/api/login', {
+        const res = await fetch(`${API_BASE_URL}/api/login`, {
             method: 'POST',
             credentials: 'include',
             headers: {

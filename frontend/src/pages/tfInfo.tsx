@@ -1,6 +1,7 @@
 // TF의 정보를 보여주는 페이지입니다.
 import React, { useState, useEffect, use } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 import '../styles/tfInfo.css';
 import '../styles/App.css';
 import Header from './header';
@@ -16,7 +17,7 @@ const TFInfo = () => {
     // console.log('TFInfo id:', id);
 
     useEffect(() => {
-        fetch('http://localhost:4000/api/me', {
+        fetch(`${API_BASE_URL}/api/me`, {
             credentials: 'include',
         })
         .then(res => {
@@ -35,7 +36,7 @@ const TFInfo = () => {
     }, []);
 
     useEffect(() => {
-        fetch(`http://localhost:4000/api/tf/${id}`, {
+        fetch(`${API_BASE_URL}/api/tf/${id}`, {
             credentials: 'include',
         })
         .then(res => res.json())
@@ -60,7 +61,7 @@ const TFInfo = () => {
     const handleDelete = async () => {
         if(confirm('정말 삭제하시겠습니까?') === false) return;
 
-        const res = await fetch(`http://localhost:4000/api/tf/${id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/tf/${id}`, {
             method: 'DELETE',
             credentials: 'include',
         });
@@ -82,15 +83,15 @@ const TFInfo = () => {
     }
 
     const handleJoin = async () => {
-        const res = await fetch(`http://localhost:4000/api/tf/${id}/join`, {
+        const res = await fetch(`${API_BASE_URL}/api/tf/${id}/join`, {
             method: 'POST',
             credentials: 'include',
         });
 
         if (res.ok) {
-            alert('TF에 참여 요청을 보냈습니다.');
+            alert('TF에 참여했습니다.');
         } else {
-            res.json().then(data => alert(data.message || 'TF 참여 요청에 실패했습니다.'));
+            res.json().then(data => alert(data.message || 'TF 참여에 실패했습니다.'));
         }
     }
 

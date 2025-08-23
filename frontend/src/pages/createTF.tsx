@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 import '../styles/createTF.css';
 import '../styles/App.css';
 import Header from './header';
@@ -19,7 +20,7 @@ const CreateTF = () => {
         setCreatedAt(now);
 
         // 로그인한 사용자 정보 가져오기 (예: 세션 또는 API로부터)
-        fetch('http://localhost:4000/api/me', {
+        fetch(`${API_BASE_URL}/api/me`, {
             credentials: 'include',
         })
         .then((res) => {
@@ -32,7 +33,7 @@ const CreateTF = () => {
             if (data.user.username) setLeader(data.user.username);
         });
 
-        fetch('http://localhost:4000/api/members', {
+        fetch(`${API_BASE_URL}/api/members`, {
             credentials: 'include',
         })
         .then((res) => res.json())
@@ -60,8 +61,7 @@ const CreateTF = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        const res = await fetch('http://localhost:4000/api/create', {
+        const res = await fetch(`${API_BASE_URL}/api/create`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',

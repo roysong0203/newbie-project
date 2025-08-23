@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { API_BASE_URL } from '../config'
 
 type User = {
   id: number;
@@ -19,7 +20,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch('http://localhost:4000/api/me', {
+        const res = await fetch(`${API_BASE_URL}/api/me`, {
           credentials: 'include',
         });
         if (res.ok) {

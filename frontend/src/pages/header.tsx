@@ -1,4 +1,5 @@
 import { useUser } from "../context/userContext";
+import { API_BASE_URL } from '../config';
 import '../styles/header.css';
 
 const Header = () => {
@@ -6,7 +7,7 @@ const Header = () => {
     const isLoggedIn = user !== null;
 
     const handleLogout = async () => {
-        const res = await fetch('http://localhost:4000/api/logout', {
+        const res = await fetch(`${API_BASE_URL}/api/logout`, {
         method: 'POST',
         credentials: 'include',
         });

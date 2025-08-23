@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from '../context/userContext';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 import '../styles/App.css';
 import '../styles/home.css';
 import Header from './header';
@@ -13,8 +14,7 @@ const MyPage = () => {
   const [followerTfList, setFollowerTfList] = useState<any[]>([]);
 
   useEffect(() => {
-
-    fetch('http://localhost:4000/api/mytfs', {
+    fetch(`${API_BASE_URL}/api/mytfs`, {
       credentials: 'include',
     })
     .then(res => {

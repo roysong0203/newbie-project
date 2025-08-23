@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 import '../styles/App.css';
 import '../styles/home.css';
 import Header from './header';
@@ -10,7 +11,7 @@ const Home = () => {
   const [tfList, setTfList] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/tfs', {
+    fetch(`${API_BASE_URL}/api/tfs`, {
       credentials: 'include',
     })
       .then(res => res.json())
