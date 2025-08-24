@@ -36,7 +36,7 @@ const MyPage = () => {
   return (
     <div className="page-wrapper">
       <Header />
-      <div className="main container" style={{ width: '87.5%' }}>
+      <div className="main" style={{ width: '87.5%' }}>
         <h2 className="section-title">{user?.username} 님이 속한 TF</h2>
         <div className="card-grid">
           {leaderTfList.map((tf) => (
@@ -61,9 +61,9 @@ const MyPage = () => {
               createdAt={new Date(tf.createdAt).toISOString().split('T')[0]}
             />
           ))}
-          <div className="card create">
-            <button className="create-btn" onClick={() => navigate('/createTF')}>+ 새로운 TF 만들기</button>
-          </div>
+          {leaderTfList.length === 0 && followerTfList.length === 0 && (
+            <div className='card none'>아직 속한 TF가 없습니다.</div>
+          )}
         </div>
       </div>
     </div>

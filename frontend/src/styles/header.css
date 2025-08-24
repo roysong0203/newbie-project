@@ -10,7 +10,9 @@
 .container {
   width: 100vw;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
 }
 
 .nav-links {
@@ -28,7 +30,7 @@
   color: #333;
   font-weight: bold;
   font-size: 24px;
-  margin-right: 1rem
+  transition: font-size 0.2s;
 }
 
 .navbar button {
@@ -46,6 +48,61 @@
   text-overflow: ellipsis;
   display: inline-block;
   vertical-align: middle;
+}
+
+.nav-links a {
+  font-size: 1rem;
+  transition: font-size 0.2s;
+}
+
+.notification-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: width 0.2s, height 0.2s;
+}
+
+.notification-count {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 0;
+  font-size: 9px;
+  min-width: 13px;
+  font-weight: bold;
+  text-align: center;
+}
+
+@media (max-width: 200px) {
+  .nav-links a,
+  .notification-wrapper {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .logo {
+    font-size: 20px;
+  }
+  .nav-links a {
+    font-size: 0.8rem;
+  }
+  .notification-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .notification-count {
+    font-size: 7px;
+    min-width: 10px;
+  }
 }
 
 @media (max-width: 800px) {

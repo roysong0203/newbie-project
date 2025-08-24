@@ -183,6 +183,7 @@ router.get('/tf/:id', async (req: Request, res: Response):Promise<any> => {
         leaderId: true,
         User: {
           select: {
+            id: true,
             username: true,
             name: true,
           },
@@ -191,8 +192,9 @@ router.get('/tf/:id', async (req: Request, res: Response):Promise<any> => {
           select: {
             User: {
               select: {
-              username: true,
-              name: true,
+                id: true,
+                username: true,
+                name: true,
               },
             },
           },
@@ -279,7 +281,7 @@ router.delete('/tf/:id', async (req: Request, res: Response):Promise<any> => {
   }
 });
 
-// TF 가입 API
+// TF 가입 요청 API
 router.post('/tf/:id/join', async (req: Request, res: Response):Promise<any> => {
   const { id } = req.params;
   const user = req.session.user;
@@ -313,14 +315,254 @@ router.post('/tf/:id/join', async (req: Request, res: Response):Promise<any> => 
       return res.status(400).json({ message: '이미 가입된 TF입니다.' });
     }
 
-    await prisma.tFMember.create({
+    // TF 가입 요청이 이미 존재하는지 확인
+    const existingRequest = await prisma.notification.findFirst({
+      where: {
+        tfId: tf.id,
+        userId: user.id,
+        isConfirmed: 0, // 아직 승인되지 않은 요청
+      },
+    });
+    if (existingRequest) {
+      console.log('이미 가입 요청이 존재합니다.');
+      return res.status(400).json({ message: '이미 가입 요청이 존재합니다.' });
+    }
+
+    // TF 가입 요청 생성
+    const joinRequest = await prisma.notification.create({
       data: {
         tfId: tf.id,
         userId: user.id,
       },
     });
+    res.status(201).json({ message: 'TF 가입 요청이 전송되었습니다.', notification: joinRequest });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: '서버 오류' });
+  }
+});
 
-    res.json({ message: 'TF 가입 완료' });
+// 내가 요청한 TF 가입 요청 목록 조회 API
+router.get('/myrequests', async (req: Request, res: Response):Promise<any> => {
+  const user = req.session.user;
+  if (!user) {
+    return res.status(401).json({ message: '로그인 필요' });
+  }
+  try {
+    const requests = await prisma.notification.findMany({
+      where: {
+        userId: user.id, // 내가 요청한 TF 가입 요청
+        isConfirmed: {
+          in: [0, 1, 2] // 승인 대기 중, 승인됨, 거절됨 (확인됨(3)은 제외)
+        }
+      },
+      include: {
+        TF: {
+          select: {
+            id: true,
+            name: true,
+            leaderId: true,
+            User: { // TF 리더 정보
+              select: {
+                id: true,
+                name: true,
+                username: true,
+              }
+            }
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc', // 최신순
+      },
+    });
+
+    res.json(requests);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: '서버 오류' });
+  }
+});
+
+// TF 가입 요청 목록 조회 API (팀장용)
+router.get('/tf/:id/requests', async (req: Request, res: Response):Promise<any> => {
+  const { id } = req.params;
+  const user = req.session.user;
+  if (!user) {
+    return res.status(401).json({ message: '로그인 필요' });
+  }
+  try {
+    const tf = await prisma.tF.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!tf) {
+      return res.status(404).json({ message: 'TF를 찾을 수 없습니다.' });
+    }
+
+    // console.log('tf', tf);
+
+    if (tf.leaderId !== user.id) {
+      return res.status(403).json({ message: '권한이 없습니다.' });
+    }
+
+    const requests = await prisma.notification.findMany({
+      where: {
+        tfId: tf.id,
+        isConfirmed: 0, // 아직 승인되지 않은 요청만 조회
+      },
+      include: {
+        User: {
+          select: {
+            username: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    // console.log('requests', requests);
+
+    res.json(requests);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: '서버 오류' });
+  }
+});
+
+// TF 가입 요청 승인/거절 API (팀장용)
+router.post('/tf/:tfId/requests/:requestId', async (req: Request, res: Response):Promise<any> => {
+  const { tfId, requestId } = req.params;
+  console.log(req.body);
+  const { action } = req.body; // 'approve' or 'reject'
+  const user = req.session.user;
+  if (!user) {
+    console.log('로그인 필요');
+    return res.status(401).json({ message: '로그인 필요' });
+  }
+  if (!['approve', 'reject'].includes(action)) {
+    console.log('유효하지 않은 액션입니다.');
+    return res.status(400).json({ message: '유효하지 않은 액션입니다.' });
+  }
+  try {
+    const tf = await prisma.tF.findUnique({
+      where: { id: Number(tfId) },
+    });
+
+    if (!tf) {
+      console.log('TF를 찾을 수 없습니다.');
+      return res.status(404).json({ message: 'TF를 찾을 수 없습니다.' });
+    }
+
+    if (tf.leaderId !== user.id) {
+      console.log('권한이 없습니다.');
+      return res.status(403).json({ message: '권한이 없습니다.' });
+    }
+
+    const request = await prisma.notification.findUnique({
+      where: { id: Number(requestId) },
+    });
+
+    if (!request || request.tfId !== tf.id || request.isConfirmed) {
+      console.log('가입 요청을 찾을 수 없습니다.');
+      return res.status(404).json({ message: '가입 요청을 찾을 수 없습니다.' });
+    }
+
+    if (action === 'approve') {
+      console.log('가입 요청 승인');
+      // 가입 요청 승인
+      await prisma.tFMember.create({
+        data: {
+          tfId: tf.id,
+          userId: request.userId,
+        },
+      });
+      await prisma.notification.update({
+        where: { id: request.id },
+        data: { isConfirmed: 1 },
+      });
+      res.json({ message: '가입 요청이 승인되었습니다.' });
+    } else {
+      // 가입 요청 거절
+      await prisma.notification.update({
+        where: { id: request.id },
+        data: { isConfirmed: 2 },
+      });
+      res.json({ message: '가입 요청이 거절되었습니다.' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: '서버 오류' });
+  }
+});
+
+// 알림 확인 처리 기능
+router.post('/notifications/:id/confirm', async (req: Request, res: Response):Promise<any> => {
+  const { id } = req.params;
+  const user = req.session.user;
+  if (!user) {
+    return res.status(401).json({ message: '로그인 필요' });
+  }
+  try {
+    const notification = await prisma.notification.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!notification || notification.userId !== user.id) {
+      return res.status(404).json({ message: '알림을 찾을 수 없습니다.' });
+    }
+
+    // isConfirmed가 1(승인됨) 또는 2(거절됨)인 경우에만 3(확인됨)으로 업데이트
+    if (notification.isConfirmed === 1 || notification.isConfirmed === 2) {
+      await prisma.notification.update({
+        where: { id: notification.id },
+        data: { isConfirmed: 3 }, // 3은 '확인됨' 상태
+      });
+    }
+
+    res.json({ message: '알림이 확인 처리되었습니다.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: '서버 오류' });
+  }
+});
+
+// TF 탈퇴 API
+router.delete('/tf/:id/quit', async (req: Request, res: Response):Promise<any> => {
+  const { id } = req.params;
+  const user = req.session.user;
+  if (!user) {
+    return res.status(401).json({ message: '로그인 필요' });
+  }
+  try {
+    const tf = await prisma.tF.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!tf) {
+      return res.status(404).json({ message: 'TF를 찾을 수 없습니다.' });
+    }
+
+    if (tf.leaderId === user.id) {
+      return res.status(400).json({ message: '팀장은 TF에서 탈퇴할 수 없습니다.' });
+    }
+
+    const membership = await prisma.tFMember.findFirst({
+      where: {
+        tfId: tf.id,
+        userId: user.id,
+      },
+    });
+
+    if (!membership) {
+      return res.status(400).json({ message: 'TF의 팀원이 아닙니다.' });
+    }
+
+    await prisma.tFMember.delete({
+      where: { id: membership.id },
+    });
+
+    res.json({ message: 'TF에서 탈퇴되었습니다.' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: '서버 오류' });

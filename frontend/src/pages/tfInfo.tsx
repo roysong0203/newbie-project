@@ -12,6 +12,7 @@ const TFInfo = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState<any>(null);
     const [isLeader, setIsLeader] = useState(false);
+    const [isMember, setIsMember] = useState(false);
     const navigate = useNavigate();
 
     // console.log('TFInfo id:', id);
@@ -41,9 +42,18 @@ const TFInfo = () => {
         })
         .then(res => res.json())
         .then(data => {
+            // console.log(data);
             if (data) {
+                // console.log(user);
+                if (user && 'TFMember' in data && 'id' in user) {
+                    const memberIds = data.TFMember.map((member: any) => member.User.id);
+                    if (memberIds.includes(user.id)) {
+                        // console.log("isMember true");
+                        setIsMember(true);
+                    }
+                }
                 setTf(data);
-                if ('id' in user && data.leaderId === user.id) {
+                if (user && 'id' in user && data.leaderId === user.id) {
                     setIsLeader(true);
                 }
             } else {
@@ -56,7 +66,7 @@ const TFInfo = () => {
 
     if (!tf) return <div>Loading...</div>;
 
-    // console.log(tf)
+    // console.log(tf);
 
     const handleDelete = async () => {
         if(confirm('정말 삭제하시겠습니까?') === false) return;
@@ -89,9 +99,24 @@ const TFInfo = () => {
         });
 
         if (res.ok) {
-            alert('TF에 참여했습니다.');
+            alert('TF 참여 요청이 전송되었습니다.');
         } else {
             res.json().then(data => alert(data.message || 'TF 참여에 실패했습니다.'));
+        }
+    }
+
+    const handleQuit = async () => {
+        if(confirm('정말 탈퇴하시겠습니까?') === false) return;
+
+        const res = await fetch(`${API_BASE_URL}/api/tf/${id}/quit`, {
+            method: 'DELETE',
+            credentials: 'include',
+        });
+        if (res.ok) {
+            alert('TF에서 탈퇴되었습니다.');
+            window.location.reload();
+        } else {
+            alert('TF 탈퇴에 실패했습니다.');
         }
     }
 
@@ -111,7 +136,8 @@ const TFInfo = () => {
                     <span>📅 생성 날짜: {new Date(tf.createdAt).toISOString().split('T')[0]}</span>
                 </div>
                 <div style={{margin: "1.5rem 0.5rem 1.5rem", display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '0.5rem'}}>
-                    {isLoggedIn && !isLeader && <button className="join-btn" onClick={() => handleJoin()} style={{width: '75%'}}>TF 참여</button>}
+                    {isLoggedIn && !isLeader && !isMember && <button className="join-btn" onClick={() => handleJoin()} style={{width: '75%'}}>TF 참여 요청</button>}
+                    {isLoggedIn && isMember && <button className="delete-btn" onClick={() => { handleQuit() }} style={{width: '75%'}}>TF 탈퇴</button>}
                     {isLeader && <button className="edit-btn" onClick={() => { handleEdit() }} style={{width: '75%'}}>수정</button>}
                     {isLeader && <button className="delete-btn" onClick={() => { handleDelete() }} style={{width: '75%'}}>삭제</button>}
                 </div>

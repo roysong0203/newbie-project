@@ -6,6 +6,7 @@ import loginRouter from './login';
 import logoutRouter from './logout';
 import tfRouter from './tf';
 import memberRouter from './member';
+import dotenv from 'dotenv';
 
 declare module 'express-session' {
   interface SessionData {
@@ -17,6 +18,8 @@ declare module 'express-session' {
   }
 }
 
+dotenv.config();
+
 const app = express();
 
 app.use(cors({
@@ -27,7 +30,7 @@ app.use(cors({
 app.use(express.json());
 
 app.use(session({
-  secret: 'your_secret_key',
+  secret: process.env.SESSION_SECRET as string,
   resave: false,
   saveUninitialized: false,
   cookie: {
