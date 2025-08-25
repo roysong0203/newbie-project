@@ -11,12 +11,12 @@ router.post('/login', async (req: Request, res: Response):Promise<any> => {
   try {
     const user = await prisma.user.findUnique({ where: { id } });
     if (!user) {
-      return res.status(401).json({ message: '아이디 혹은 비밀번호가 일치하지 않습니다.' });
+      return res.status(401).json({ message: '아이디 혹은 패스워드가 일치하지 않습니다.' });
     }
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return res.status(401).json({ message: '아이디 혹은 비밀번호가 일치하지 않습니다.' });
+      return res.status(401).json({ message: '아이디 혹은 패스워드가 일치하지 않습니다.' });
     }
 
     req.session.user = { id: user.id, username: user.username };

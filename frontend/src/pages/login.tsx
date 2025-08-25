@@ -46,8 +46,14 @@ const Login = () => {
             <div className='login-container'>
                 <h1>로그인</h1>
                 <form onSubmit={handleLogin}>
-                    <input type="text" id="username" value={id} onChange={e => setId(e.target.value)} placeholder="아이디를 입력해주세요" />
-                    <input type="password" id="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="비밀번호를 입력해주세요" />
+                    <div>
+                        <label htmlFor="username">아이디</label>
+                        <input type="text" id="username" value={id} onChange={e => setId(e.target.value)} placeholder="아이디를 입력해주세요" />
+                    </div>
+                    <div>
+                        <label htmlFor="password">패스워드</label>
+                        <input type="password" id="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="패스워드를 입력해주세요" />
+                    </div>
                     <button type="submit">로그인</button>
                 </form>
                 <p style={{color: "green"}}> {success} </p>

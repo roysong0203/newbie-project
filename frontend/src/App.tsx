@@ -12,6 +12,7 @@ import CreateTF from "./pages/createTF";
 import TFInfo from "./pages/tfInfo";
 import MyPage from "./pages/mypage";
 import EditTF from "./pages/editTF";
+import EditProfile from "./pages/editProfile";
 import NotificationPage from "./pages/notification";
 import { UserProvider } from "./context/userContext";
 
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="/editTF" element={<EditTF />} />
           <Route path="/tf" element={<TFInfo />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/editProfile" element={<EditProfile />} />
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/notification" element={<NotificationPage />} />
         </Routes>

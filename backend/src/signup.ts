@@ -14,13 +14,13 @@ router.post('/signup', async (req: Request, res: Response):Promise<any> => {
       return res.status(400).json({ message: '이미 존재하는 아이디입니다.' });
     }
 
-    // 아이디, 비밀번호, 이름, 닉네임 유효성 검사
+    // 아이디, 패스워드, 이름, 닉네임 유효성 검사
     if (!id || !password || !name || !username) {
       return res.status(400).json({ message: '모든 필드를 입력해주세요.' });
     }
 
     if (password.length < 6) {
-      return res.status(400).json({ message: '비밀번호는 최소 6자 이상이어야 합니다.' });
+      return res.status(400).json({ message: '패스워드는 최소 6자 이상이어야 합니다.' });
     }
     if (id.length > 20) {
       return res.status(400).json({ message: '아이디는 최대 20자까지 가능합니다.' });
@@ -30,7 +30,7 @@ router.post('/signup', async (req: Request, res: Response):Promise<any> => {
       return res.status(400).json({ message: '아이디에 공백을 포함할 수 없습니다.' });
     }
     if (/\s/.test(password)) {
-      return res.status(400).json({ message: '비밀번호에 공백을 포함할 수 없습니다.' });
+      return res.status(400).json({ message: '패스워드에 공백을 포함할 수 없습니다.' });
     }
     if (/\s/.test(username)) {
       return res.status(400).json({ message: '닉네임에 공백을 포함할 수 없습니다.' });

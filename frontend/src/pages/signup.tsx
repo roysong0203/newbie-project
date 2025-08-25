@@ -19,7 +19,7 @@ const SignUp = () => {
     e.preventDefault();
 
     if (password !== passwordCheck) {
-      setError('비밀번호가 일치하지 않습니다.');
+      setError('패스워드가 일치하지 않습니다.');
       return;
     }
 
@@ -37,7 +37,7 @@ const SignUp = () => {
         setError('');
         setTimeout(() => {
           navigate('/');
-        }, 1000);
+        }, 500);
       } else {
         const data = await res.json();
         setError(data.message || '회원가입 실패');
@@ -55,11 +55,27 @@ const SignUp = () => {
       <div className='login-container'>
         <h1>회원가입</h1>
         <form onSubmit={handleSubmit}>
-          <input type="text" placeholder="이름" value={name} onChange={e => setName(e.target.value)} required />
-          <input type="text" placeholder="아이디" value={id} onChange={e => setId(e.target.value)} required />
-          <input type="text" placeholder="닉네임" value={username} onChange={e => setUsername(e.target.value)} required />
-          <input type="password" placeholder="비밀번호" value={password} onChange={e => setPassword(e.target.value)} required />
-          <input type="password" placeholder="비밀번호 재확인" value={passwordCheck} onChange={e => setPasswordCheck(e.target.value)} required />
+          <div>
+            <label htmlFor='name'>이름</label>
+            <input id='name' type="text" placeholder="이름" value={name} onChange={e => setName(e.target.value)} required />
+          </div>
+          <div>
+            <label htmlFor='id'>아이디</label>
+            <input id='id' type="text" placeholder="아이디" value={id} onChange={e => setId(e.target.value)} required />
+          </div>
+          <div>
+            <label htmlFor='username'>닉네임</label>
+            <input id='username' type="text" placeholder="닉네임" value={username} onChange={e => setUsername(e.target.value)} required />
+          </div>
+          <div>
+            <label htmlFor='password'>패스워드</label>
+            <input id='password' type="password" placeholder="패스워드" value={password} onChange={e => setPassword(e.target.value)} required />
+          </div>
+          <div>
+            <label htmlFor='password-check'>패스워드 재확인</label>
+            <input id='password-check' type="password" placeholder="패스워드 재확인" value={passwordCheck} onChange={e => setPasswordCheck(e.target.value)} required />
+          </div>
+          
           <button type="submit">회원가입</button>
         </form>
         {error && <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>}
