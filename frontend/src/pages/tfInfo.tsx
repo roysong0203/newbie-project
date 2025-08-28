@@ -85,10 +85,25 @@ const TFInfo = () => {
     }
 
     const handleEdit = () => {
+        if (!isLoggedIn) {
+            alert('로그인 후 이용해주세요.');
+            navigate('/login');
+            return;
+        }
+        if (!isLeader) {
+            alert('팀장만 수정할 수 있습니다.');
+            return;
+        }
         navigate(`/editTF/${tfId}`);
     }
 
     const handleJoin = async () => {
+        if (!isLoggedIn) {
+            alert('로그인 후 이용해주세요.');
+            navigate('/login');
+            return;
+        }
+
         const res = await fetch(`${API_BASE_URL}/api/tf/${tfId}/join`, {
             method: 'POST',
             credentials: 'include',
@@ -132,7 +147,7 @@ const TFInfo = () => {
                     <span>📅 생성 날짜: {new Date(tf.createdAt).toISOString().split('T')[0]}</span>
                 </div>
                 <div style={{margin: "1.5rem 0.5rem 1.5rem", display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '0.5rem'}}>
-                    {isLoggedIn && !isLeader && !isMember && <button className="join-btn" onClick={() => handleJoin()} style={{width: '75%'}}>TF 참여 요청</button>}
+                    {(!isLoggedIn || ( !isLeader && !isMember )) && <button className="join-btn" onClick={() => handleJoin()} style={{width: '75%'}}>TF 참여 요청</button>}
                     {isLoggedIn && isMember && <button className="delete-btn" onClick={() => { handleQuit() }} style={{width: '75%'}}>TF 탈퇴</button>}
                     {isLeader && <button className="edit-btn" onClick={() => { handleEdit() }} style={{width: '75%'}}>수정</button>}
                     {isLeader && <button className="delete-btn" onClick={() => { handleDelete() }} style={{width: '75%'}}>삭제</button>}

@@ -77,6 +77,7 @@ const SignUp = () => {
           </div>
           
           <button type="submit">회원가입</button>
+          <p>이미 계정이 있으신가요? <a href="/signup">로그인</a></p>
         </form>
         {error && <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>}
         {success && <p style={{ color: 'green', marginTop: '1rem' }}>{success}</p>}
