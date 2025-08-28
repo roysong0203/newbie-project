@@ -38,7 +38,7 @@ const NotificationPage = () => {
                 return res.json();
             })
             .then(data => {
-                console.log(data);
+                // console.log(data);
                 const requestsWithFormattedDate = data.map((request: any) => ({
                     createdAt: new Date(request.createdAt).toLocaleString('ko-KR', {
                         year: 'numeric',
@@ -61,7 +61,7 @@ const NotificationPage = () => {
                         (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
                     )
                 );
-                console.log(requestsWithFormattedDate);
+                // console.log(requestsWithFormattedDate);
             })
             .catch(err => console.error('내 요청 알림 불러오기 실패:', err));
         }
@@ -108,7 +108,7 @@ const NotificationPage = () => {
                         (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
                     )
                 );
-                console.log(allRequests);
+                // console.log(allRequests);
             })
             .catch(err => console.error('가입 요청 알림 불러오기 실패:', err));
         }
@@ -178,48 +178,57 @@ const NotificationPage = () => {
     return (
         <div className='page-wrapper'>
             <Header />
-            <main className="main" style={{ width: '80%' }}>
+            <main className="notification-main">
                 <h2 className='section-title'>알림</h2>
-                <table className='notification-table'>
-                    <thead className='notification-thead'>
-                        <tr>
-                            <th>요청 일자</th>
-                            <th>요청자</th>
-                            <th>참가 희망 TF</th>
-                            <th>TF 담당자</th>
-                            <th>상태</th>
-                            {notifications.some(n => !n.isLeader && (n.isConfirmed === 1 || n.isConfirmed === 2)) && <th></th>}
-                        </tr>
-                    </thead>
-                    <tbody className='notification-tbody'>
-                        {notifications.map((notification) => (
-                            <tr key={notification.id}>
-                                <td>{notification.createdAt}</td>
-                                <td>{notification.requester}</td>
-                                <td>{notification.tfName}</td>
-                                <td>{notification.leaderUsername}</td>
-                                { notification.isLeader && notification.isConfirmed === 0 &&
-                                    <td>
-                                        <button className='approve-button' onClick={() => handleAccept(notification.id, notification.tfId)}>수락</button>
-                                        <button className='reject-button' onClick={() => handleReject(notification.id, notification.tfId)}>거절</button>
-                                    </td>
-                                }
-                                { !notification.isLeader &&
-                                    <td>
-                                        { notification.isConfirmed === 0 && '대기 중' }
-                                        { notification.isConfirmed === 1 && '수락됨' }
-                                        { notification.isConfirmed === 2 && '거절됨' }
-                                    </td>
-                                }
-                                { !notification.isLeader && notification.isConfirmed !== 0 &&
-                                    <td>
-                                        <button className='confirm-button' onClick={() => handleConfirm(notification.id)}>확인</button>
-                                    </td>
-                                }
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                {
+                    notifications.length === 0 ? (
+                        <p className='no-notifications'>현재 알림이 없습니다.</p>
+                    ) : null
+                }
+                {
+                    notifications.length > 0 ? (
+                        <table className='notification-table'>
+                            <thead className='notification-thead'>
+                                <tr>
+                                    <th>요청 일자</th>
+                                    <th>요청자</th>
+                                    <th>참가 희망 TF</th>
+                                    <th>TF 담당자</th>
+                                    <th>상태</th>
+                                    {notifications.some(n => !n.isLeader && (n.isConfirmed === 1 || n.isConfirmed === 2)) && <th></th>}
+                                </tr>
+                            </thead>
+                            <tbody className='notification-tbody'>
+                                {notifications.map((notification) => (
+                                    <tr key={notification.id}>
+                                        <td>{notification.createdAt}</td>
+                                        <td>{notification.requester}</td>
+                                        <td>{notification.tfName}</td>
+                                        <td>{notification.leaderUsername}</td>
+                                        { notification.isLeader && notification.isConfirmed === 0 &&
+                                            <td>
+                                                <button className='approve-button' onClick={() => handleAccept(notification.id, notification.tfId)}>수락</button>
+                                                <button className='reject-button' onClick={() => handleReject(notification.id, notification.tfId)}>거절</button>
+                                            </td>
+                                        }
+                                        { !notification.isLeader &&
+                                            <td>
+                                                { notification.isConfirmed === 0 && '대기 중' }
+                                                { notification.isConfirmed === 1 && '수락됨' }
+                                                { notification.isConfirmed === 2 && '거절됨' }
+                                            </td>
+                                        }
+                                        { !notification.isLeader && ( notification.isConfirmed == 1 || notification.isConfirmed == 2 ) &&
+                                            <td>
+                                                <button className='confirm-button' onClick={() => handleConfirm(notification.id)}>확인</button>
+                                            </td>
+                                        }
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    ) : null
+                }
             </main>
         </div>
     );

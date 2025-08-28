@@ -9,15 +9,13 @@
 
 .container {
   width: 100vw;
-  margin: 0 auto;
   padding: 0 1rem;
-  display: flex;
-  align-items: center;
 }
 
-.nav-links {
+.nav-links, .mobile-menu {
   display: flex;
   gap: 1rem;
+  margin-left: 1rem;
 }
 
 .navbar .container {
@@ -30,6 +28,16 @@
   color: #333;
   font-weight: bold;
   font-size: 24px;
+  transition: font-size 0.2s;
+  height: 30px;
+  line-height: 30px;
+  margin: auto;
+}
+
+.welcome {
+  font-size: 1rem;
+  color: #666;
+  margin: auto;
   transition: font-size 0.2s;
 }
 
@@ -61,9 +69,10 @@
   display: inline-block;
 }
 
-.notification-icon {
+.notification-icon, .menu-icon {
   width: 24px;
   height: 24px;
+  display: block;
   cursor: pointer;
   transition: width 0.2s, height 0.2s;
 }
@@ -82,26 +91,25 @@
   text-align: center;
 }
 
-.mypage-dropdown {
+.mypage-dropdown, .mobile-menu {
     position: relative;
     display: inline-block;
-    margin: auto;
 }
 
 .mypage-link {
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: font-size 0.2s;
-    margin: auto;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: font-size 0.2s;
+  margin: auto;
 }
 .mypage-link:hover {
   color: #535bf2;
 }
 
-.dropdown-menu {
+.dropdown-menu, .mobile-dropdown-menu {
     position: absolute;
     top: 100%;
     left: 0;
@@ -113,7 +121,12 @@
     z-index: 1000;
 }
 
-.dropdown-menu a {
+.mobile-dropdown-menu {
+  left: auto;
+  right: 0;
+}
+
+.dropdown-menu a, .mobile-dropdown-menu a {
     display: block;
     padding: 10px;
     font-size: 1rem;
@@ -123,27 +136,11 @@
     transition: background 0.2s;
 }
 
-.dropdown-menu a:hover {
+.dropdown-menu a:hover, .mobile-dropdown-menu a:hover {
     background: #f5f5f5;
 }
 
-@media (max-width: 450px) {
-  .nav-links a,
-  .notification-wrapper,
-  .mypage-dropdown {
-    display: none;
-  }
-  .nav-bar {
-    padding: 0;
-  }
-  .container {
-    justify-content: center;
-    padding: 0;
-    gap: 0.5rem;
-  }
-}
-
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .logo {
     font-size: 20px;
   }
@@ -174,13 +171,31 @@
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 700px) {
   .welcome {
     display: none;
   }
 }
-@media (min-width: 801px) {
+@media (min-width: 751px) {
   .welcome {
     display: block;
+  }
+}
+
+@media (max-width: 450px) {
+  .nav-links {
+    display: none;
+  }
+  .mobile-menu {
+    display: block;
+  }
+}
+
+@media (min-width: 451px) {
+  .nav-links {
+    display: flex;
+  }
+  .mobile-menu {
+    display: none;
   }
 }

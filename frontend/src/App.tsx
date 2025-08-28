@@ -25,8 +25,8 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/createTF" element={<CreateTF />} />
-          <Route path="/editTF" element={<EditTF />} />
-          <Route path="/tf" element={<TFInfo />} />
+          <Route path="/editTF/:tfId" element={<EditTF />} />
+          <Route path="/tf/:tfId" element={<TFInfo />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/editProfile" element={<EditProfile />} />
           <Route path="*" element={<Navigate to="/" />} />

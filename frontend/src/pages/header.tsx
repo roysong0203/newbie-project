@@ -10,6 +10,7 @@ const Header = () => {
     const [ leaderTfList, setLeaderTfList ] = useState<any[]>([]);
     const [ notificationCount, setNotificationCount ] = useState(0);
     const [ showMypageMenu, setShowMypageMenu ] = useState(false); // 드롭다운 상태
+    const [ showMobileMenu, setShowMobileMenu ] = useState(false); // 모바일 메뉴 상태
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -71,7 +72,7 @@ const Header = () => {
                 <nav className="nav-links">
                     { isLoggedIn && 
                         <Link to='/notification' className="notification-wrapper">
-                            <img src="src/assets/bell.png" alt="notification" className="notification-icon" title="알림"/>
+                            <img src="/bell.png" alt="notification" className="notification-icon" title="알림"/>
                             { notificationCount > 0 &&
                                 <span className="notification-count">{ notificationCount > 9 ? '9+' : notificationCount }</span> }
                         </Link>
@@ -99,6 +100,52 @@ const Header = () => {
                     { !isLoggedIn && <Link to="/login" title="로그인">로그인</Link> }
                     { isLoggedIn && <Link to="/" onClick={handleLogout} title="로그아웃">로그아웃</Link> }
                 </nav>
+                {/* 모바일 메뉴 드롭다운 */}
+                <div className="mobile-menu">
+                    <img
+                        src="/menu.png"
+                        alt="menu"
+                        className="menu-icon"
+                        onClick={() => setShowMobileMenu(!showMobileMenu)}
+                    />
+                    {showMobileMenu && (
+                        <div className="mobile-dropdown-menu">
+                            <Link to="/" onClick={() => setShowMobileMenu(false)}>홈으로</Link>
+                            {isLoggedIn && (
+                                <Link to="/notification" onClick={() => setShowMobileMenu(false)}>
+                                    알림
+                                    {notificationCount > 0 && (
+                                        <span className="notification-count">{notificationCount > 9 ? '9+' : notificationCount}</span>
+                                    )}
+                                </Link>
+                            )}
+                            {isLoggedIn && (
+                                <>
+                                    <Link to="/editProfile" onClick={() => setShowMobileMenu(false)}>회원정보 수정</Link>
+                                    <Link to="/mypage" onClick={() => setShowMobileMenu(false)}>내가 속한 TF</Link>
+                                </>
+                            )}
+                            {!isLoggedIn && (
+                                <>
+                                    <Link to="/signup" onClick={() => setShowMobileMenu(false)}>회원가입</Link>
+                                    <Link to="/login" onClick={() => setShowMobileMenu(false)}>로그인</Link>
+                                </>
+                            )}
+                            {isLoggedIn && (
+                                <Link
+                                    to="/"
+                                    onClick={async (e) => {
+                                        e.preventDefault();
+                                        await handleLogout();
+                                        setShowMobileMenu(false);
+                                    }}
+                                >
+                                    로그아웃
+                                </Link>
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
         </header>
     );

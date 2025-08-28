@@ -1,13 +1,13 @@
 // TF의 정보를 보여주는 페이지입니다.
 import React, { useState, useEffect, use } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 import '../styles/tfInfo.css';
 import '../styles/App.css';
 import Header from './header';
 
 const TFInfo = () => {
-    const { id } = useLocation().state;
+    const { tfId } = useParams();
     const [tf, setTf] = useState<any>(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState<any>(null);
@@ -37,7 +37,7 @@ const TFInfo = () => {
     }, []);
 
     useEffect(() => {
-        fetch(`${API_BASE_URL}/api/tf/${id}`, {
+        fetch(`${API_BASE_URL}/api/tf/${tfId}`, {
             credentials: 'include',
         })
         .then(res => res.json())
@@ -62,7 +62,7 @@ const TFInfo = () => {
             return setTf(data);
         })
         .catch(err => console.error('TF 정보 불러오기 실패:', err));
-    }, [user, id]);
+    }, [user, tfId]);
 
     if (!tf) return <div>Loading...</div>;
 
@@ -71,7 +71,7 @@ const TFInfo = () => {
     const handleDelete = async () => {
         if(confirm('정말 삭제하시겠습니까?') === false) return;
 
-        const res = await fetch(`${API_BASE_URL}/api/tf/${id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/tf/${tfId}`, {
             method: 'DELETE',
             credentials: 'include',
         });
@@ -85,15 +85,11 @@ const TFInfo = () => {
     }
 
     const handleEdit = () => {
-        navigate('/editTF', {
-            state: {
-                id: id
-            }
-        });
+        navigate(`/editTF/${tfId}`);
     }
 
     const handleJoin = async () => {
-        const res = await fetch(`${API_BASE_URL}/api/tf/${id}/join`, {
+        const res = await fetch(`${API_BASE_URL}/api/tf/${tfId}/join`, {
             method: 'POST',
             credentials: 'include',
         });
@@ -108,7 +104,7 @@ const TFInfo = () => {
     const handleQuit = async () => {
         if(confirm('정말 탈퇴하시겠습니까?') === false) return;
 
-        const res = await fetch(`${API_BASE_URL}/api/tf/${id}/quit`, {
+        const res = await fetch(`${API_BASE_URL}/api/tf/${tfId}/quit`, {
             method: 'DELETE',
             credentials: 'include',
         });

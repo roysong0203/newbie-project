@@ -13,7 +13,7 @@ const Card = ({ id, name, description, head, members, createdAt }: { id: number,
         <span>👤 팀장: {head}</span>
         <span>👥 팀원: {members}명</span>
         <span>📅 생성 날짜: {createdAt}</span>
-        <button className="btn" onClick={() => navigate('/tf', { state: { id } })}>자세히 보기</button>
+        <button className="btn" onClick={() => navigate(`/tf/${id}`, { state: { id } })}>자세히 보기</button>
       </div>
     </div>
   );

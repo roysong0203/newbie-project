@@ -1,10 +1,26 @@
 /* notification.css */
 
+.notification-main {
+  flex: 1;
+  margin-top: 2rem;
+  width: 87.5%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.no-notifications {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 2rem;
+}
+
 /* 알림 테이블 */
 .notification-table {
     width: 100%;
     border-collapse: collapse;
     background-color: #fff;
+    table-layout: fixed;
 }
 
 /* 테이블 헤더 */
@@ -24,13 +40,20 @@
     transition: font-size 0.2s ease;
 }
 
+/* 텍스트가 길 경우 줄임표(...) 처리 */
+.notification-tbody td, .notification-thead th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* 버튼 스타일 */
 .notification-tbody button {
-    margin-right: 8px;
+    margin: 1px 2px;
     padding: 6px 12px;
     font-size: 0.9rem;
     border: none;
-    border-radius: 6px;
+    border-radius: 6px; 
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
@@ -61,34 +84,21 @@
     background-color: #007bb5;
 }
 
-@media (max-width: 900px) {
-    .notification-thead th {
-        padding: 8px 12px;
-        font-size: 12px;
-    }
-
-    .notification-tbody td {
-        padding: 8px 12px;
-        font-size: 12px;
-    }
-
-    .notification-tbody button {
-        margin-right: 4px;
-        padding: 6px 10px;
-        font-size: 12px;
-    }
-}
-
 /* 700px 이하일 때 더 작은 폰트와 패딩 적용 */
 @media (max-width: 700px) {
+    .notification-main {
+        width: 95%;
+        padding: 0 10px;
+    }
+
     .notification-thead th,
     .notification-tbody td {
-        padding: 3px 4px;
-        font-size: 8px;
+        padding: 6px 8px;
+        font-size: 0.8rem;
     }
 
     .notification-tbody button {
-        font-size: 8px;
-        padding: 4px 8px;
+        padding: 3px 6px;
+        font-size: 0.8rem;
     }
 }

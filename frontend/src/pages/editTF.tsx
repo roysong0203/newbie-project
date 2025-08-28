@@ -1,12 +1,12 @@
 import { useState, useEffect, use } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 import '../styles/createTF.css';
 import '../styles/App.css';
 import Header from './header';
 
 const EditTF = () => {
-    const { id } = useLocation().state;
+    const { tfId } = useParams();
     const [teamName, setTeamName] = useState('');
     const [description, setDescription] = useState('');
     const [members, setMembers] = useState<string[]>(['']);
@@ -40,7 +40,7 @@ const EditTF = () => {
     }, []);
 
     useEffect(() => {
-        fetch(`${API_BASE_URL}/api/tf/${id}`, {
+        fetch(`${API_BASE_URL}/api/tf/${tfId}`, {
             credentials: 'include',
         })
         .then(res => res.json())
@@ -57,7 +57,7 @@ const EditTF = () => {
             }
         })
         .catch(err => console.error('TF 정보 불러오기 실패:', err));
-    }, [id]);
+    }, [tfId]);
 
     const addMember = () => setMembers([...members, '']);
     const removeMember = (index: number) => {
@@ -79,7 +79,7 @@ const EditTF = () => {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
-            body: JSON.stringify({ id, name: teamName, description, leader, members }),
+            body: JSON.stringify({ id: tfId, name: teamName, description, leader, members }),
         });
 
         const data = await res.json();
