@@ -1,7 +1,7 @@
 .tfinfo-container {
     margin: 12.5vh auto;
     padding: 1rem 2rem 1.5rem;
-    width: max(300px, 30vw);
+    width: max(400px, 30vw);
     min-height: 50vh;
     border-radius: 10px;
     border: 1px solid #ddd;
@@ -49,4 +49,11 @@
 
 .delete-btn:hover {
     background-color: #b91c1c;
+}
+
+@media (max-width: 450px) {
+    .tfinfo-container {
+        width: 90vw;
+        margin: 10vh auto;
+    }
 }

@@ -61,7 +61,7 @@ const NotificationPage = () => {
                         (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
                     )
                 );
-                // console.log(requestsWithFormattedDate);
+                // console.log('요청한 알림: ', requestsWithFormattedDate);
             })
             .catch(err => console.error('내 요청 알림 불러오기 실패:', err));
         }
@@ -108,7 +108,7 @@ const NotificationPage = () => {
                         (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
                     )
                 );
-                // console.log(allRequests);
+                // console.log('요청받은 알림: ', allRequests);
             })
             .catch(err => console.error('가입 요청 알림 불러오기 실패:', err));
         }

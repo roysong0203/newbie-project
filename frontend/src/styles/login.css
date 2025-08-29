@@ -7,7 +7,7 @@
 .login-container {
     margin: 12.5vh auto;
     padding: 1.5rem 2rem 4rem;
-    min-width: 30vw;
+    width: max(400px, 30vw);
     min-height: 50vh;
     border-radius: 10px;
     border: 1px solid #ddd;
@@ -72,4 +72,25 @@
     border: 1px solid #ddd;
     background-color: white;
     color: #333;
+}
+
+@media (max-width: 450px) {
+    .login-container {
+        width: 90vw;
+        margin: 10vh auto;
+        padding: 1rem;
+    }
+
+    .login-container form {
+        width: 100%;
+    }
+
+    .login-container form div {
+        width: 100%;
+    }
+
+    .login-container form button {
+        width: 100%;
+    }
+    
 }
