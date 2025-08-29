@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { API_BASE_URL } from '../config'
 
 type User = {
-  id: number;
+  id: string;
   username: string;
 };
 

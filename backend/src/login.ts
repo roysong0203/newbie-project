@@ -20,7 +20,13 @@ router.post('/login', async (req: Request, res: Response):Promise<any> => {
     }
 
     req.session.user = { id: user.id, username: user.username };
-    res.status(200).json({ message: '로그인 성공', user: req.session.user });
+    req.session.save(err => {
+      if (err) {
+        console.error('Session save error:', err);
+        return res.status(500).json({ message: '세션 저장 실패' });
+      }
+      res.status(200).json({ message: '로그인 성공', user: req.session.user });
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: '서버 오류' });
@@ -28,6 +34,7 @@ router.post('/login', async (req: Request, res: Response):Promise<any> => {
 });
 
 router.get('/me', (req: Request, res: Response) => {
+  console.log(req.session);
   if (req.session.user) {
     res.json({ user: req.session.user });
   } else {

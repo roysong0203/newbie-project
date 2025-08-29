@@ -23,11 +23,16 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://dori.newbie.sparcs.me'], // 프론트엔드 주소
-  credentials: true, // 쿠키를 주고받기 위해 필수
+  origin: 'https://dori.newbie.sparcs.me',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
+
 app.use(express.json());
+
+app.set('trust proxy', 1);
 
 app.use(session({
   secret: process.env.SESSION_SECRET as string,
@@ -35,8 +40,9 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: false,
-    maxAge: 1000 * 60 * 60 * 2 // 2시간
+    secure: true, // HTTPS 환경이므로 true
+    sameSite: 'none', // 크로스 도메인 쿠키 허용
+    maxAge: 1000 * 60 * 60 * 2
   }
 }));
 
@@ -48,8 +54,4 @@ app.use('/api', memberRouter);
 
 app.listen(8000, () => {
   console.log('Server running at https://dori.api.newbie.sparcs.me');
-});
-
-app.listen(4000, () => {
-  console.log('Server running at http://localhost:4000');
 });
